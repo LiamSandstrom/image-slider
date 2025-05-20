@@ -14,7 +14,15 @@ window.addEventListener("mouseup", e => {
 
 container.addEventListener("wheel", scrollImage);
 
+let lastScrollTime = 0;
+const scrollThrottleMs = 25;
+
 function scrollImage(e){
+    //limit calls to reduce lag
+    const now = Date.now();
+    if (now - lastScrollTime < scrollThrottleMs) return;
+    lastScrollTime = now;
+
     const conRect = container.getBoundingClientRect();
     const handleRect = handle.getBoundingClientRect();
     const topRect = topWrapper.getBoundingClientRect();
@@ -22,13 +30,13 @@ function scrollImage(e){
     const handlePercent = (handleRect.width / conRect.width) * 100;
 
     const currPercent = (topRect.width / conRect.width) * 100;
-    let percent = (e.deltaY * 2 / conRect.width) * -100;
+    let percent = (e.deltaY / conRect.width) * -100;
     percent += currPercent;
 
     percent = Math.min(Math.max(handlePercent, percent), 100);
     topWrapper.animate(
         {width: `${percent}%`},
-        {duration: 1000, fill: "forwards",  easing: "ease-out" }
+        {duration: 800, fill: "forwards",  easing: "ease-out" }
     );
 }
 
