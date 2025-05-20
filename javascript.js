@@ -15,7 +15,7 @@ window.addEventListener("mouseup", e => {
 container.addEventListener("wheel", scrollImage);
 
 let lastScrollTime = 0;
-const scrollThrottleMs = 25;
+const scrollThrottleMs = 30;
 
 function scrollImage(e){
     //limit calls to reduce lag
@@ -30,7 +30,7 @@ function scrollImage(e){
     const handlePercent = (handleRect.width / conRect.width) * 100;
 
     const currPercent = (topRect.width / conRect.width) * 100;
-    let percent = (e.deltaY / conRect.width) * -100;
+    let percent = (e.deltaY * 1.5 / conRect.width) * -100;
     percent += currPercent;
 
     percent = Math.min(Math.max(handlePercent, percent), 100);
